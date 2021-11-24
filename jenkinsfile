@@ -1,0 +1,24 @@
+pipeline{
+ agent any
+ stages{
+   stage('clone source code'){
+     agent{ 
+
+       
+     }
+     steps{
+        script{
+                        def gitBranches = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref --all | sed s:origin/:: | sort -u')
+                        env.BRANCH_TO_BUILD = input message: 'Please select a branch', ok: 'Continue',
+                            parameters: [choice(name: 'BRANCH_TO_BUILD', choices: gitBranches, description: 'Select the branch to build?')]
+              }
+                    //git branch: "${env.BRANCH_TO_BUILD}", credentialsId: 'repo.notification-sender', url: 'git@github.com:repo/notification-sender.git'
+                    git branch: "${env.BRANCH_TO_BUILD", credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
+     }
+
+       
+  }
+  
+ }
+
+}
