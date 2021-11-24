@@ -2,10 +2,6 @@ pipeline{
  agent any
  stages{
    stage('clone source code'){
-     agent{ 
-
-       
-     }
      steps{
         script{
                         def gitBranches = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref --all | sed s:origin/:: | sort -u')
