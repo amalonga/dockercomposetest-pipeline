@@ -1,13 +1,15 @@
 pipeline{
  agent any
+ parameters{
+ 
+   git-parameter( name: Foo)
+ }
+ 
  stages{
    stage('clone source code'){
-   
-    
-      
+       
      steps{
-        script{
-                        
+        script{                      
                         
                         //def gitBranches = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref --all | sed s:origin/:: | sort -u')
                         def gitBranches = ['master', 'feature/dev_ama']
