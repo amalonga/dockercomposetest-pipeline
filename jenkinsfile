@@ -3,7 +3,7 @@ pipeline{
  parameters{
  
    //gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-   gitParameter branchFilter: 'origin.*/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'string', useRepository: '.*pipeline.git'
+   gitParameter branchFilter: 'origin.*/(.*)', defaultValue: 'master', name: 'BRANCH', useRepository: '.*pipeline.git'
  }
  
  stages{
