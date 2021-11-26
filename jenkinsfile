@@ -2,9 +2,23 @@ pipeline{
  agent any
  stages{
    stage('clone source code'){
+   
+     parameters{
+      git-parameter(
+      name: 'Foo', description: 'Lorem ipsum dolor sit amet.' , type: PT_BRANCH_TAG,branch: 'baz', tagFilter: 'bam', branchFilter: 'boo', sortMode: ASCENDING,
+      defaultValue: bor,
+      selectedValue: TOP,
+      useRepository: buh,
+      quickFilterEnabled: true
+      )
+     }
+      
      steps{
         script{
+                        
+                        
                         def gitBranches = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref --all | sed s:origin/:: | sort -u')
+                        
                         env.BRANCH_TO_BUILD = input message: 'Please select a branch', ok: 'Continue',
                             parameters: [choice(name: 'BRANCH_TO_BUILD', choices: gitBranches, description: 'Select the branch to build?')]
               }
