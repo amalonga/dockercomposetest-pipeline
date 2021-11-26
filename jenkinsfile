@@ -10,7 +10,7 @@ pipeline{
                         
                         
                         //def gitBranches = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref --all | sed s:origin/:: | sort -u')
-                        /def gitBranches = [ 'master', 'feature/dev_ama']
+                        def gitBranches = ['master', 'feature/dev_ama']
                         env.BRANCH_TO_BUILD = input message: 'Please select a branch', ok: 'Continue',
                             parameters: [choice(name: 'BRANCH_TO_BUILD', choices: gitBranches, description: 'Select the branch to build?')]
               }
