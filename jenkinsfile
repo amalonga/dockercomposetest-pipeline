@@ -1,12 +1,19 @@
 pipeline{
- agent any
+ agent any 
+ 
  parameters{
- 
-   //gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-   //gitParameter branchFilter: 'origin.*/(.*)', defaultValue: 'master', name: 'BRANCH', useRepository: '.*pipeline.git'
-   gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+    
+        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+        
+        choice(choices: ['nav2', 'traffic_report', 'nmp', 'nmm', 'tft2', 'all'], description: 'What is the project?', name: 'project')
+        choice(choices: ['status', 'start', 'stop'], description: 'choose ?', name: 'TOMCAT_STATE')
+        choice(choices: ['lab', 'int', 'rec', 'pre', 'prd', 'all'], description: 'What is the environment?', name: 'environment')
+        booleanParam(defaultValue: true, description: 'launch the playbook in dry-run mode', name: 'isCheck')
+        choice(choices: ['', '-v', '-vv', '-vvv'], description: 'verbosity', name: 'verbosity')
+        text(name: 'ssh_keys_add', description: 'Add users ssh keys in the following format:\nname: Raf, state: present, key_pub: \"ssh-rsa AAAAB3NzaC***XJFKQ== benmansour_rafik@yahoo.fr\"',defaultValue:"")
+        text(name: 'ssh_keys_remove', description: 'Remove ssh keys by specifying the name of the user in the following format:\nRaf',defaultValue:"")
+    
  }
- 
  stages{
    stage('clone source code'){
        
@@ -17,14 +24,62 @@ pipeline{
                         def gitBranches = ['master', 'feature/dev_ama']
                         env.BRANCH_TO_BUILD = input message: 'Please select a branch', ok: 'Continue',
                             parameters: [choice(name: 'BRANCH_TO_BUILD', choices: gitBranches, description: 'Select the branch to build?')]
-              }
+        }
                     //git branch: "${env.BRANCH_TO_BUILD}", credentialsId: 'repo.notification-sender', url: 'git@github.com:repo/notification-sender.git'
                     git branch: "${env.BRANCH}", credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
      }
 
        
-  }
-  
+  } 
+    
+        
+        stage('liste des noeuds'){
+               
+            when{
+            
+              expression{
+                env.TOMCAT_STATE == "status"
+              }
+            
+        }       
+            steps{
+                echo "${env.TOMCAT_STATE}"                
+                sh'''
+                docker node ls 
+                
+                '''
+            }
+            
+        }
+        stage('start tomcat'){
+            
+            when{
+                expression{
+                    env.TOMCAT_STATE == "start"
+                }
+            }
+            steps{
+                echo "env.TOMCAT_STATE : ${env.TOMCAT_STATE}"
+                
+                sh 'docker service ls' 
+            }
+            
+        }
+        stage("stop tomcat"){
+            when{
+                expression{
+                    
+                    env.TOMCAT_STATE == "stop"
+                }
+                
+            }
+            steps{
+                
+                echo "env.TOMCAT_STATE: ${env.TOMCAT_STATE}"
+            }
+        }
+        
+         
  }
 
 }
