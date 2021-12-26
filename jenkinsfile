@@ -18,7 +18,7 @@ pipeline{
        
      steps{
        
-         git branch: 'dev_ama', credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
+         git branch: 'feature/dev_ama', credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
      }
 
        
