@@ -3,7 +3,6 @@ pipeline{
  
  parameters{
     
-        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
         
         choice(choices: ['nav2', 'traffic_report', 'nmp', 'nmm', 'tft2', 'all'], description: 'What is the project?', name: 'project')
         choice(choices: ['status', 'start', 'stop'], description: 'choose ?', name: 'TOMCAT_STATE')
@@ -18,14 +17,8 @@ pipeline{
    stage('clone source code'){
        
      steps{
-        script{                      
-                        
-                        //def gitBranches = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref --all | sed s:origin/:: | sort -u')
-                        def gitBranches = ['master', 'feature/dev_ama']
-                        env.BRANCH_TO_BUILD = input message: 'Please select a branch', ok: 'Continue',
-                            parameters: [choice(name: 'BRANCH_TO_BUILD', choices: gitBranches, description: 'Select the branch to build?')]
-        }
-                        git branch: 'dev_ama', credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
+       
+         git branch: 'dev_ama', credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
      }
 
        
