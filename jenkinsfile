@@ -25,8 +25,7 @@ pipeline{
                         env.BRANCH_TO_BUILD = input message: 'Please select a branch', ok: 'Continue',
                             parameters: [choice(name: 'BRANCH_TO_BUILD', choices: gitBranches, description: 'Select the branch to build?')]
         }
-                    //git branch: "${env.BRANCH_TO_BUILD}", credentialsId: 'repo.notification-sender', url: 'git@github.com:repo/notification-sender.git'
-                    git branch: "${env.BRANCH}", credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
+                        git branch: 'dev_ama', credentialsId: 'am', url: 'https://github.com/amalonga/dockercomposetest-pipeline.git'
      }
 
        
