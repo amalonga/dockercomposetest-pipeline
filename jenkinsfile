@@ -81,8 +81,8 @@ options {
  }
  
  post {
-        cleanup {
-            /* clean up our workspace */
+        /*cleanup {
+            /* clean up our workspace 
         
                 deleteDir()
             
@@ -96,6 +96,15 @@ options {
             } 
             
            
+        } */
+        
+         always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
         }
     }
 
